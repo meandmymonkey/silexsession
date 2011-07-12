@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Title{% endblock %}</title>
+</head>
+<body>
+
+<ul>
+    <li><a href="/hello/Kermit">Say Hello to Kermit</a></li>
+    <li><a href="/convert/celsius/100">Convert 100° Celsius to Fahrenheit</a></li>
+    <li><a href="/convert/fahrenheit/100">Convert 100° Fahrenheit to Celsius</a></li>
+</ul>
+
+{% block body %}
+body
+{% endblock %}
+
+</body>
+</html>
