@@ -28,11 +28,6 @@ $app['converter'] = $app->share(function()
  * Controller setup
  */
 
-$app->get('/hello/{name}', function ($name) use ($app)
-{
-    return $app['twig']->render('hello.html.twig', array('name' => $name));
-});
-
 $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees) use ($app)
 {
     if ($sourceFormat == 'celsius')
@@ -50,7 +45,8 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
         'result'        => $result
     ));
 })
-->assert('sourceFormat', 'celsius|fahrenheit')
+->assert('degrees', '\d+')
+->assert('sourceFormat', 'fahrenheit|celsius')
 ->value('degrees', 100);
 
 /**
