@@ -2,11 +2,15 @@
 
 require_once __DIR__ . '/../silex.phar';
 
+use Silex\Application;
+use SilexWorkshop\Model\Converter;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
 * Setup
 */
 
-$app = new Silex\Application();
+$app = new Application();
 
 $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
@@ -16,7 +20,7 @@ $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
 $app['converter'] = $app->share(function()
 {
-    return new SilexWorkshop\Model\Converter();
+    return new Converter();
 });
 
 /**
@@ -25,17 +29,18 @@ $app['converter'] = $app->share(function()
 
 $app->get('/hello/{name}', function ($name) use ($app)
 {
-    return 'Hello ' . $app->escape($name);
+    return new Response('Hello ' . $app->escape($name), 200);
 });
 
-$app->get('/convert/fahrenheit/{fahrenheit}', function ($fahrenheit) use ($app)
+$app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees) use ($app)
 {
-    return $app['converter']->toCelsius($fahrenheit);
-});
-
-$app->get('/convert/celsius/{celsius}', function ($celsius) use ($app)
-{
-    return $app['converter']->toFahrenheit($celsius);
+    if ($sourceFormat == 'fahrenheit') {
+        $result = $app['converter']->toCelsius($degrees);
+    } else {
+        $result = $app['converter']->toFahrenheit($degrees);
+    }
+    
+    return new Response($result, 200);
 });
 
 /**
