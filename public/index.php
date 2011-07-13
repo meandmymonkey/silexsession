@@ -14,6 +14,14 @@ $app = new Application();
 
 $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
+$helloApp   = require(__DIR__.'/hello.php');
+$convertApp = require(__DIR__ . '/converter.php');
+$postApp    = require(__DIR__.'/post.php');
+
+$app->mount('/hello', $helloApp);
+$app->mount('/paramconvert', $convertApp);
+$app->mount('/post', $postApp);
+
 /**
 * Services
 */
@@ -27,11 +35,6 @@ $app['converter'] = $app->share(function()
 * Controller setup
 */
 
-$app->get('/hello/{name}', function ($name) use ($app)
-{
-    return new Response('Hello ' . $app->escape($name), 200);
-});
-
 $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees) use ($app)
 {
     if ($sourceFormat == 'fahrenheit') {
@@ -41,7 +44,10 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
     }
     
     return new Response($result, 200);
-});
+})
+->assert('degrees', '\d+')
+->assert('sourceFormat', 'fahrenheit|celsius')
+->value('degrees', 100);
 
 /**
 * Run application
