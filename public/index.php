@@ -8,7 +8,7 @@ require_once __DIR__ . '/../silex.phar';
 
 $app = new Silex\Application();
 
-$app['autoloader']->registerNamespace('DevSession', __DIR__.'/../lib');
+$app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
 /**
 * Services
@@ -16,7 +16,7 @@ $app['autoloader']->registerNamespace('DevSession', __DIR__.'/../lib');
 
 $app['converter'] = $app->share(function()
 {
-    return new DevSession\Converter();
+    return new SilexWorkshop\Model\Converter();
 });
 
 /**

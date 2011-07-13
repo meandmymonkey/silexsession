@@ -1,6 +1,6 @@
 <?php
 
-namespace DevSession;
+namespace SilexWorkshop\Model;
 
 class Converter
 {
