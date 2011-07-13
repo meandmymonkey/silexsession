@@ -2,7 +2,9 @@
 
 require_once __DIR__ . '/../silex.phar';
 
-
+/**
+ * Setup & extensions
+ */
 
 $app = new Silex\Application();
 
@@ -13,12 +15,18 @@ $app->register(new Silex\Extension\TwigExtension(), array(
     'twig.class_path' => __DIR__.'/../vendor/twig/lib',
 ));
 
+/**
+ * Services
+ */
+
 $app['converter'] = $app->share(function()
 {
     return new SilexWorkshop\Model\Converter();
 });
 
-// TODO comments
+/**
+ * Controller setup
+ */
 
 $app->get('/hello/{name}', function ($name) use ($app)
 {
@@ -45,6 +53,8 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
 ->assert('sourceFormat', 'celsius|fahrenheit')
 ->value('degrees', 100);
 
-
+/**
+ * Run application
+ */
 
 $app->run();
