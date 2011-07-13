@@ -1,5 +1,7 @@
 <?php
 
+// TODO: move to model namespace
+
 namespace DevSession;
 
 class Converter
