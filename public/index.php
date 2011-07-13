@@ -6,7 +6,7 @@ require_once __DIR__ . '/../silex.phar';
 
 $app = new Silex\Application();
 
-$app['autoloader']->registerNamespace('DevSession', __DIR__.'/../lib');
+$app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
 $app->register(new Silex\Extension\TwigExtension(), array(
     'twig.path'       => __DIR__.'/../views',
@@ -15,7 +15,7 @@ $app->register(new Silex\Extension\TwigExtension(), array(
 
 $app['converter'] = $app->share(function()
 {
-    return new DevSession\Converter();
+    return new SilexWorkshop\Model\Converter();
 });
 
 // TODO comments

@@ -2,7 +2,7 @@
 
 // TODO: move to model namespace
 
-namespace DevSession;
+namespace SilexWorkshop\Model;
 
 class Converter
 {
