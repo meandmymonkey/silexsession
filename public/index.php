@@ -44,12 +44,12 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
     {
         $result = $app['converter']->toCelsius($degrees);
     }
-
-    return $app['twig']->render('converter.html.twig', array(
+    
+    return new Response($app['twig']->render('converter.html.twig', array(
         'source_format' => $sourceFormat,
         'degrees'       => $degrees,
         'result'        => $result
-    ));
+    )), 200);
 })
 ->assert('degrees', '\d+')
 ->assert('sourceFormat', 'fahrenheit|celsius')
@@ -59,14 +59,17 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
 * Error handling
 */
 
-$app->error(function (\Exception $e) {
+$app->error(function (\Exception $e) use ($app) {
     if ($e instanceof NotFoundHttpException) {
-        return new Response('Nothing to see here. Go away.', 404);
+        return new Response($app['twig']->render('error404.html.twig', array('exception' => $e)), 404);
     }
 
     $code = ($e instanceof HttpException) ? $e->getStatusCode() : 500;
         
-    return new Response('Whoa, major breakdown!', $code);
+    return new Response($app['twig']->render('error500.html.twig', array(
+         'code'      => $code,
+         'exception' => $e
+    )), $code);
 });
 
 /**
