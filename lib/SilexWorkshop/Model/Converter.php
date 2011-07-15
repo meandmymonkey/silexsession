@@ -1,7 +1,5 @@
 <?php
 
-// TODO: move to model namespace
-
 namespace SilexWorkshop\Model;
 
 class Converter
