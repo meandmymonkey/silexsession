@@ -11,16 +11,15 @@ use Symfony\Component\HttpFoundation\Response;
 */
 
 $postApp = new Application();
-
 $postApp['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
 /**
 * Controller setup
 */
 
-$postApp->post('/comment/new', function () use ($postApp)
+$postApp->post('/new', function () use ($postApp)
 {
-    $request = $postApp['request'];
+    $request =  $postApp['request'];
 
     $comment = new Comment();
     $comment->content = $request->get('comment');

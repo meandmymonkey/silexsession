@@ -14,13 +14,13 @@ $app = new Application();
 
 $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
-$helloApp   = require(__DIR__.'/hello.php');
-$convertApp = require(__DIR__ . '/converter.php');
-$postApp    = require(__DIR__.'/post.php');
+$helloApp          = require(__DIR__.'/hello.php');
+$paramConverterApp = require(__DIR__ . '/paramConverter.php');
+$postRequestApp    = require(__DIR__ . '/postRequest.php');
 
 $app->mount('/hello', $helloApp);
-$app->mount('/paramconvert', $convertApp);
-$app->mount('/post', $postApp);
+$app->mount('/param-converter', $paramConverterApp);
+$app->mount('/post-request', $postRequestApp);
 
 /**
 * Services
