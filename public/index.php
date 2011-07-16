@@ -16,10 +16,16 @@ $app = new Application();
 
 $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
+$app->register(new Silex\Extension\UrlGeneratorExtension());
 $app->register(new Silex\Extension\TwigExtension(), array(
     'twig.path'       => __DIR__.'/../views',
-    'twig.class_path' => __DIR__.'/../vendor/twig/lib',
+    'twig.class_path' => __DIR__.'/../vendor/twig/lib'
 ));
+
+$app->before(function() use ($app)
+{
+    $app['twig']->addGlobal('url_generator', $app['url_generator']);
+});
 
 /**
  * Services
@@ -53,7 +59,8 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
 })
 ->assert('degrees', '\d+')
 ->assert('sourceFormat', 'fahrenheit|celsius')
-->value('degrees', 100);
+->value('degrees', 37)
+->bind('temp');
 
 /**
 * Error handling
