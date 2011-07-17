@@ -6,43 +6,47 @@ use Silex\Application;
 use Silex\ExtensionInterface;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StaticExtension implements ExtensionInterface
 {
 
     public function register(Application $app)
     {
-        $viewBasePath   = isset($app['dc.base.view_basepath'])   ? $app['dc.base.view_basepath']    : __DIR__ . '/../../../../views';
-        $globals        = isset($app['dc.base.globals'])         ? $app['dc.base.globals']          : array();
-        $staticRoutes   = isset($app['dc.base.static_routes'])   ? $app['dc.base.static_routes']    : array(
+        if (!isset($app['twig']))
+        {
+            throw new \LogicException('TwigExtension needs to be enabled.');
+        }
+
+        $globals      = isset($app['static.globals']) ? $app['static.globals'] : array();
+        $staticRoutes = isset($app['static.routes'])  ? $app['static.routes']  : array(
             'home' => array(
                 'path'     => '/',
-                'template' => 'index.twig.html'
+                'template' => 'index.html.twig'
             )
         );
 
-        if (isset($app['twig']))
+        foreach ($globals as $key => $value)
         {
-            foreach ($globals as $key => $value)
-            {
-                $app['twig']->addGlobal($key, $value);
-            }
-
-            //$app['twig']->addGlobal('url_generator', $app['url_generator']);
-            //$app['twig']->addGlobal('current_route', $app['request']->attributes->get('_route'));
+            $app['twig']->addGlobal($key, $value);
         }
 
         foreach ($staticRoutes as $name => $route)
         {
             $app->get($route['path'], function () use ($app, $route, $name)
             {
-                return $app['twig']->render($route['template']);
+                return new Response($app['twig']->render($route['template']), 200);
             })
             ->bind($name);
         }
+
+        $app->before(function() use ($app) {
+
+            if (isset($app['url_generator']))
+            {
+                $app['twig']->addGlobal('url_generator', $app['url_generator']);
+                $app['twig']->addGlobal('current_route', $app['request']->attributes->get('_route'));
+            }
+        });
     }
 
 }
