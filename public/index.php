@@ -5,8 +5,6 @@ require_once __DIR__ . '/../silex.phar';
 use Silex\Application;
 use SilexWorkshop\Model\Converter;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Setup & extensions
@@ -21,7 +19,7 @@ $app->register(new Silex\Extension\TwigExtension(), array(
     'twig.path'       => __DIR__.'/../views',
     'twig.class_path' => __DIR__.'/../vendor/twig/lib'
 ));
-$app->register(new SilexWorkshop\Extension\StaticExtension());
+$app->register(new SilexWorkshop\Extension\BaseExtension());
 
 $app->before(function() use ($app)
 {
@@ -62,23 +60,6 @@ $app->get('/convert/{sourceFormat}/{degrees}', function ($sourceFormat, $degrees
 ->assert('sourceFormat', 'fahrenheit|celsius')
 ->value('degrees', 37)
 ->bind('temp');
-
-/**
-* Error handling
-*/
-
-$app->error(function (\Exception $e) use ($app) {
-    if ($e instanceof NotFoundHttpException) {
-        return new Response($app['twig']->render('error404.html.twig', array('exception' => $e)), 404);
-    }
-
-    $code = ($e instanceof HttpException) ? $e->getStatusCode() : 500;
-        
-    return new Response($app['twig']->render('error500.html.twig', array(
-         'code'      => $code,
-         'exception' => $e
-    )), $code);
-});
 
 /**
 * Run application

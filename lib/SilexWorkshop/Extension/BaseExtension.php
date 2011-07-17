@@ -6,9 +6,13 @@ use Silex\Application;
 use Silex\ExtensionInterface;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class StaticExtension implements ExtensionInterface
+class BaseExtension implements ExtensionInterface
 {
+
+    // TODO comments
 
     public function register(Application $app)
     {
@@ -46,6 +50,23 @@ class StaticExtension implements ExtensionInterface
                 $app['twig']->addGlobal('url_generator', $app['url_generator']);
                 $app['twig']->addGlobal('current_route', $app['request']->attributes->get('_route'));
             }
+        });
+
+        /**
+        * Error handling
+        */
+
+        $app->error(function (\Exception $e) use ($app) {
+            if ($e instanceof NotFoundHttpException) {
+                return new Response($app['twig']->render('error404.html.twig', array('exception' => $e)), 404);
+            }
+
+            $code = ($e instanceof HttpException) ? $e->getStatusCode() : 500;
+
+            return new Response($app['twig']->render('error500.html.twig', array(
+                 'code'      => $code,
+                 'exception' => $e
+            )), $code);
         });
     }
 
