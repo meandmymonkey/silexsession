@@ -12,15 +12,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class BaseExtension implements ExtensionInterface
 {
 
-    // TODO comments
-
     public function register(Application $app)
     {
+        /**
+         * Check requirements
+         */
+
         if (!isset($app['twig']))
         {
             throw new \LogicException('TwigExtension needs to be enabled.');
         }
 
+        /**
+         * Set defaults
+         */
+        
         $globals      = isset($app['static.globals']) ? $app['static.globals'] : array();
         $staticRoutes = isset($app['static.routes'])  ? $app['static.routes']  : array(
             'home' => array(
@@ -29,10 +35,18 @@ class BaseExtension implements ExtensionInterface
             )
         );
 
+        /**
+         * Set twig global vars from config
+         */
+
         foreach ($globals as $key => $value)
         {
             $app['twig']->addGlobal($key, $value);
         }
+
+        /**
+         *  Set static routes from config
+         */
 
         foreach ($staticRoutes as $name => $route)
         {
@@ -43,8 +57,11 @@ class BaseExtension implements ExtensionInterface
             ->bind($name);
         }
 
-        $app->before(function() use ($app) {
+        /**
+         *  Add router vars if possible
+         */
 
+        $app->before(function() use ($app) {
             if (isset($app['url_generator']))
             {
                 $app['twig']->addGlobal('url_generator', $app['url_generator']);
@@ -53,8 +70,8 @@ class BaseExtension implements ExtensionInterface
         });
 
         /**
-        * Error handling
-        */
+         * Default error handling
+         */
 
         $app->error(function (\Exception $e) use ($app) {
             if ($e instanceof NotFoundHttpException) {
