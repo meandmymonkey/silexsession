@@ -21,6 +21,7 @@ $app->register(new Silex\Extension\TwigExtension(), array(
     'twig.path'       => __DIR__.'/../views',
     'twig.class_path' => __DIR__.'/../vendor/twig/lib'
 ));
+$app->register(new SilexWorkshop\Extension\StaticExtension());
 
 $app->before(function() use ($app)
 {
