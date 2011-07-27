@@ -1,0 +1,26 @@
+/* @override http://silexsession.local/css/screen.css */
+
+*
+{
+  font: 13px "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+a
+{
+  text-decoration: none;
+  color: #008cff;
+}
+
+p
+{
+  width: 300px;
+  float: left;
+}
+
+ul
+{
+  list-style-type: none;
+  width:  300px;
+  height: 600px;
+  float: left;
+}

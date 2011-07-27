@@ -3,9 +3,11 @@
 {% block title %}Converter{% endblock %}
 
 {% block body %}
+<p>
 {% if source_format == 'celsius' %}
 {{ '%01.1f'|format(degrees) }}° Celsius are {{ '%01.1f'|format(result) }}° Fahrenheit.
 {% else %}
 {{ '%01.1f'|format(degrees) }}° Fahrenheit are {{ '%01.1f'|format(result) }}° Celsius.
 {% endif %}
+</p>
 {% endblock %}
