@@ -1,0 +1,11 @@
+{
+    "hash": "6fcfb4b6cd26f556bd03288c3cbf4cbd",
+    "packages": [
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "9f322ab2fd21fc70ad58ee62facc0eb5ed2b9db8"
+        }
+    ],
+    "aliases": []
+}
