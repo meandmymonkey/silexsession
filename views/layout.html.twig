@@ -7,6 +7,7 @@
 <body>
 
 <ul>
+    <li><a href="{{ path('home') }}">Home</a></li>
     <li><a href="{{ path('temp', {'sourceFormat': 'celsius', 'degrees': '100'}) }}">Convert 100° Celsius to Fahrenheit</a></li>
     <li><a href="{{ path('temp', {'sourceFormat': 'fahrenheit', 'degrees': '100'}) }}">Convert 100° Fahrenheit to Celsius</a></li>
 </ul>

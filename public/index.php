@@ -19,7 +19,8 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views'
 ));
-$app->register(new SilexWorkshop\Extension\BaseExtension());
+
+$app->register(new SilexWorkshop\Provider\BaseProvider());
 
 /**
  * Services

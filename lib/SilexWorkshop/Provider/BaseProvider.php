@@ -1,15 +1,15 @@
 <?php
 
-namespace SilexWorkshop\Extension;
+namespace SilexWorkshop\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class BaseExtension implements ExtensionInterface
+class BaseProvider implements ServiceProviderInterface
 {
 
     public function register(Application $app)
@@ -64,7 +64,6 @@ class BaseExtension implements ExtensionInterface
         $app->before(function() use ($app) {
             if (isset($app['url_generator']))
             {
-                $app['twig']->addGlobal('url_generator', $app['url_generator']);
                 $app['twig']->addGlobal('current_route', $app['request']->attributes->get('_route'));
             }
         });
