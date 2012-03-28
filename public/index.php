@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../silex.phar';
+require_once __DIR__ . '/../vendor/.composer/autoload.php';
 
 use Silex\Application;
 use SilexWorkshop\Model\Converter;
@@ -14,17 +14,12 @@ $app = new Application();
 
 $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
-$app->register(new Silex\Extension\UrlGeneratorExtension());
-$app->register(new Silex\Extension\TwigExtension(), array(
-    'twig.path'       => __DIR__.'/../views',
-    'twig.class_path' => __DIR__.'/../vendor/twig/lib'
+$app->register(new Silex\Provider\SymfonyBridgesServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/../views'
 ));
 $app->register(new SilexWorkshop\Extension\BaseExtension());
-
-$app->before(function() use ($app)
-{
-    $app['twig']->addGlobal('url_generator', $app['url_generator']);
-});
 
 /**
  * Services
