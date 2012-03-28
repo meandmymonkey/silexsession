@@ -14,6 +14,11 @@ return call_user_func(function() {
         $loader->add($namespace, $path);
     }
 
+    $classMap = require __DIR__.'/autoload_classmap.php';
+    if ($classMap) {
+        $loader->addClassMap($classMap);
+    }
+
     $loader->register();
 
     return $loader;

@@ -45,6 +45,7 @@ class ClassLoader
     private $prefixes = array();
     private $fallbackDirs = array();
     private $useIncludePath = false;
+    private $classMap = array();
 
     public function getPrefixes()
     {
@@ -54,6 +55,23 @@ class ClassLoader
     public function getFallbackDirs()
     {
         return $this->fallbackDirs;
+    }
+
+    public function getClassMap()
+    {
+        return $this->classMap;
+    }
+
+    /**
+     * @param array $classMap Class to filename map
+     */
+    public function addClassMap(array $classMap)
+    {
+        if ($this->classMap) {
+            $this->classMap = array_merge($this->classMap, $classMap);
+        } else {
+            $this->classMap = $classMap;
+        }
     }
 
     /**
@@ -142,6 +160,10 @@ class ClassLoader
      */
     public function findFile($class)
     {
+        if (isset($this->classMap[$class])) {
+            return $this->classMap[$class];
+        }
+
         if ('\\' == $class[0]) {
             $class = substr($class, 1);
         }
@@ -159,8 +181,8 @@ class ClassLoader
         $classPath .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
         foreach ($this->prefixes as $prefix => $dirs) {
-            foreach ($dirs as $dir) {
-                if (0 === strpos($class, $prefix)) {
+            if (0 === strpos($class, $prefix)) {
+                foreach ($dirs as $dir) {
                     if (file_exists($dir . DIRECTORY_SEPARATOR . $classPath)) {
                         return $dir . DIRECTORY_SEPARATOR . $classPath;
                     }

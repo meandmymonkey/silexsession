@@ -1,5 +1,7 @@
 {
     "require": {
-        "twig/twig": "*"
+        "silex/silex": "*",
+        "twig/twig": "*",
+        "symfony/twig-bridge": "*"
     }
 }
