@@ -2,17 +2,16 @@
 
 require_once __DIR__ . '/../silex.phar';
 
-use Silex\Application;
+use Silex\ControllerCollection ;
 use SilexWorkshop\Model\Comment;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
 * Setup
 */
 
-$convertApp = new Application();
-
-$app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
+$convertApp = new ControllerCollection();
 
 /**
 * Controller setup
@@ -20,13 +19,13 @@ $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
 $convertApp->get('/{id}', function (Comment $comment) use ($convertApp)
 {
-    return new Response($comment->content);
+    return new Response($comment->id . ' - ' . $comment->content);
 })
 ->assert('id', '\d+')
-->convert('comment', function ($id) {
+->convert('comment', function ($id, Request $request) {
     // in real life, fetch Comment from storage
     $comment = new Comment();
-    $comment->id = $id;
+    $comment->id = $request->attributes->get('id');
 
     return $comment;
 });
