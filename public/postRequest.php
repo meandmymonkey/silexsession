@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../silex.phar';
 
-use Silex\Application;
+use Silex\ControllerCollection;
 use SilexWorkshop\Model\Comment;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,8 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 * Setup
 */
 
-$postApp = new Application();
-$postApp['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
+$postApp = new ControllerCollection();
 
 /**
 * Controller setup

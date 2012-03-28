@@ -2,14 +2,14 @@
 
 require_once __DIR__ . '/../silex.phar';
 
-use Silex\Application;
+use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
 * Setup
 */
 
-$helloApp = new Application();
+$helloApp = new ControllerCollection();
 
 /**
 * Controller setup
