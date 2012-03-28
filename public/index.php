@@ -18,9 +18,12 @@ $app = new Application();
 $app['autoloader']->registerNamespace('SilexWorkshop', __DIR__.'/../lib');
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views'
 ));
+
+$app->register(new Silex\Provider\SymfonyBridgesServiceProvider());
 
 $app->before(function() use ($app)
 {
